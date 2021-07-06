@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {Text, Dimensions} from "react-native";
 import {Grid, Row} from "react-native-easy-grid";
 import { Magnetometer } from 'expo-sensors';
-import MapView from 'react-native-maps'
 
 const {height, width} = Dimensions.get("window");
 
@@ -32,28 +31,9 @@ function getDegree(magnetometer) {
 export default () => {
   const [magnetometer, setMagnetometerState] = useState(0)
   const [subscriptions, setSubscriptions] = useState([])
-  const [mapRegion, setMapRegion] = useState(null);
   const setMagnetometer = sensorData => setMagnetometerState(getAngle(sensorData));
 
   useEffect(() => {
-    (async () => {
-      const {status} = await Location.requestForegroundPermissionsAsync();
-
-      if (status !== 'granted') {
-        console.error('Permission to access location was denied');
-
-        return;
-      }
-
-      const location = await Location.getCurrentPositionAsync({});
-
-      setMapRegion({
-        ...location.coords,
-        longitudeDelta: 0.922,
-        latitudeDelta: 0.0421
-      });
-    })();
-
     Magnetometer.setUpdateInterval(16);
 
     setSubscriptions([
@@ -79,18 +59,11 @@ export default () => {
             width: width,
             position: "absolute",
             textAlign: "center",
-            zIndex: 1000,
           }}
         >
           {getDegree(magnetometer)}°
         </Text>
       </Row>
-      <MapView
-        camera={{ heading: getDegree(magnetometer) }}
-        rotateEnabled={true}
-        style={{ width, height }}
-        initialRegion={mapRegion}
-      ></MapView>
     </Grid>
   );
 }
