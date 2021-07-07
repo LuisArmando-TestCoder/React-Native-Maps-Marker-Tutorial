@@ -76,9 +76,10 @@ export default () => {
           style={{
             color: "#fff",
             fontSize: height / 27,
-            width: width,
+            width,
             position: "absolute",
             textAlign: "center",
+            top: 0,
             zIndex: 1000,
           }}
         >
