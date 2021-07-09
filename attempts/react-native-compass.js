@@ -34,10 +34,9 @@ export default class App extends Component {
 
   _subscribe = async () => {
     setUpdateIntervalForType(SensorTypes.magnetometer, 16);
-    this._subscription = magnetometer.subscribe(
-      sensorData => this.setState({magnetometer: this._angle(sensorData)}),
-      error => console.log("The sensor is not available"),
-    );
+    this._subscription = magnetometer.subscribe({
+      complete: sensorData => this.setState({magnetometer: this._angle(sensorData)}),
+    });
   };
 
   _unsubscribe = () => {
