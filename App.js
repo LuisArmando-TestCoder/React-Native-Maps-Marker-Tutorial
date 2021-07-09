@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from "react";
-import {Text, Dimensions} from "react-native";
+import {Text} from "react-native";
 import {Grid, Row} from "react-native-easy-grid";
 import { Magnetometer } from 'expo-sensors';
 import MapView from 'react-native-maps'
-
-const {height, width} = Dimensions.get("window");
 
 function getAngle(magnetometer) {
   let angle = 0;
@@ -54,7 +52,7 @@ export default () => {
       });
     })();
 
-    Magnetometer.setUpdateInterval(16);
+    Magnetometer.setUpdateInterval(1);
 
     setSubscriptions([
       ...subscriptions,
@@ -75,8 +73,8 @@ export default () => {
         <Text
           style={{
             color: "#fff",
-            fontSize: height / 27,
-            width,
+            fontSize: 16,
+            width: '100%',
             position: "absolute",
             textAlign: "center",
             top: 0,
@@ -87,9 +85,16 @@ export default () => {
         </Text>
       </Row>
       <MapView
-        camera={{ heading: getDegree(magnetometer) }}
+        camera={{
+          heading: getDegree(magnetometer),
+          center: {
+            latitude: 9.995440,
+            longitude: -84.113388,
+          },
+          altitude: 1000,
+        }}
         rotateEnabled={true}
-        style={{ width, height }}
+        style={{ top: 0, position: 'absolute', width: '100%', height: '100%'}}
         initialRegion={mapRegion}
       ></MapView>
     </Grid>
